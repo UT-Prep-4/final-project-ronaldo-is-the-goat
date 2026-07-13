@@ -89,4 +89,13 @@ def draw_grid():
             pygame.draw.rect(rect, LIGHT_GREY, rect, 1)
 
 while True:
+    for event in pygame.event.get():
+      if event.type == pygame.QUIT:
+        pygame.quit()
+        sys.exit()
     
+    screen.fill(DARK_GREY)
+
+    draw_grid()
+
+    pygame.display.flip()
