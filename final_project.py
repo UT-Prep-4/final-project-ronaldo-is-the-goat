@@ -64,4 +64,29 @@ Build your project below (and split it into more .py files if it gets big;
 the grader reads all of them). Delete this line and start!
 '''
 
+import pygame
+import sys
+import time
 
+pygame.init()
+
+WIDTH, HEIGHT = 500, 500
+
+GRID_SIZE = 40 # size of each grid pixel
+
+WHITE = (255,255,255)
+DARK_GREY = (50, 50, 50)
+LIGHT_GREY = (200, 200, 200)
+
+screen = pygame.display.set_mode((WIDTH, HEIGHT))
+pygame.display.set_caption("Conway's Game of Life")
+
+def draw_grid():
+    # draws the grid pattern
+    for x in range(0, WIDTH, GRID_SIZE):
+        for y in range(0, WIDTH, GRID_SIZE):
+            rect = pygame.Rect(x, y, GRID_SIZE, GRID_SIZE)
+            pygame.draw.rect(rect, LIGHT_GREY, rect, 1)
+
+while True:
+    
