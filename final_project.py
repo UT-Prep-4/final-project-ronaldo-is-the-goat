@@ -77,25 +77,45 @@ GRID_SIZE = 40 # size of each grid pixel
 WHITE = (255,255,255)
 DARK_GREY = (50, 50, 50)
 LIGHT_GREY = (200, 200, 200)
+YELLOW = (255,255,0)
+
+COLS = WIDTH // GRID_SIZE
+ROWS = HEIGHT // GRID_SIZE
+
+grid_state = [[False for _ in range(COLS) for _ in range(ROWS)]]
 
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Conway's Game of Life")
 
 def draw_grid():
     # draws the grid pattern
-    for x in range(0, WIDTH, GRID_SIZE):
-        for y in range(0, WIDTH, GRID_SIZE):
-            rect = pygame.Rect(x, y, GRID_SIZE, GRID_SIZE)
-            pygame.draw.rect(rect, LIGHT_GREY, rect, 1)
+    for row in range(ROWS):
+        for col in range(COLS):
+            rect = pygame.Rect(col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE)
+
+            if grid_state[row][col]:
+                pygame.draw.rect(screen, YELLOW, rect)
+
+            pygame.draw.rect(screen, LIGHT_GREY, rect, 1)
 
 while True:
+    mouse_x, mouse_y = pygame.mouse.get_pos()
+
     for event in pygame.event.get():
       if event.type == pygame.QUIT:
         pygame.quit()
         sys.exit()
-    
+      
+      if event.type == pygame.MOUSEBUTTONDOWN:
+         if event.button == 1:
+            mouse_x, mouse_y = event.pos
+            
+            clicked_column = mouse_x // GRID_SIZE
+            clicked_row = mouse_y // GRID_SIZE
+
+            if 0 <= clicked_column <= COLS and 0 <= clicked_row < ROWS:
+              grid_state[clicked_row][clicked_col] = not grid_state[clicked_row][clicked_col]
+              
     screen.fill(DARK_GREY)
-
     draw_grid()
-
     pygame.display.flip()
