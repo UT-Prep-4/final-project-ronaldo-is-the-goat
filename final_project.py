@@ -1,4 +1,4 @@
-#Name(s):
+#Name(s): Suchir, Jayan, Chirag, Alex
 #Final Project - Build Something Worth Showing Off
 '''
 This is the big one. At the end of camp you will demo this project at the
@@ -64,4 +64,4 @@ Build your project below (and split it into more .py files if it gets big;
 the grader reads all of them). Delete this line and start!
 '''
 
-print("My final project is not built yet!")
+

@@ -1,18 +1,17 @@
-# Project Title (REPLACE THIS with your project's name)
+# Conway's Game of Life
 
 ## What it is
-REPLACE THIS: 2-4 sentences a stranger could understand. What does your program
-do? What makes it cool? This is the paragraph you would put on a resume or in a
-college application, so write it like you're proud of it.
+Conway's Game of Life is a simulation that demonstrates how simple rules can create complex and unpredictable patterns. The program displays a grid of cells that can be either alive or dead, and each generation evolves based on the states of neighboring cells. It's interesting because the simulation can produce stable structures, repeating patterns, and moving formations called "gliders" from very simple starting configurations.
 
 ## How to run it
-REPLACE THIS: exact steps. For example: "Run python final_project.py in the
-terminal, then open port 6080 to see the game window. Use the arrow keys to move."
+1. Make sure Python 3 is installed.
+2. Install pygame with `pip install pygame`
+3. Run the program with `python final_project.py`
+4. The simulation window will open. Use the controls shown in the program (if any) to start, pause, or reset the simulation.
 
 ## How it works
-REPLACE THIS: 2-4 sentences on the interesting part of the code. Which function
-does the magic? What was the hardest bug you fixed?
+The main update function calculates the number of living neighbors for every cell in the grid and applies Conway's four rules simultaneously to create the next generation. The program repeatedly redraws the grid after each update, creating an animated simulation. One of the most challenging parts was ensuring that every cell updates based on the previous generation rather than changing immediately, which would produce incorrect results.
 
 ## Built by
-REPLACE THIS: your name(s), and anything you used for help or inspiration
-(tutorials, art sources, your instructor, teammates).
+Chirag Pant, Suchir Shah, Jayan Patel, Alex Xu
+Inspired by John Conway's original Game of Life.
