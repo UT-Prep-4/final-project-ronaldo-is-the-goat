@@ -82,7 +82,7 @@ YELLOW = (255,255,0)
 COLS = WIDTH // GRID_SIZE
 ROWS = HEIGHT // GRID_SIZE
 
-grid_state = [[False for _ in range(COLS) for _ in range(ROWS)]]
+grid_state = [[False for _ in range(COLS)] for _ in range(ROWS)]
 
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Conway's Game of Life")
