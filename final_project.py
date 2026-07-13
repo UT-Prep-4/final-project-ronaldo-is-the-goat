@@ -113,8 +113,8 @@ while True:
             clicked_column = mouse_x // GRID_SIZE
             clicked_row = mouse_y // GRID_SIZE
 
-            if 0 <= clicked_column <= COLS and 0 <= clicked_row < ROWS:
-              grid_state[clicked_row][clicked_col] = not grid_state[clicked_row][clicked_col]
+            if 0 <= clicked_column < COLS and 0 < clicked_row < ROWS:
+              grid_state[clicked_row][clicked_column] = not grid_state[clicked_row][clicked_column]
               
     screen.fill(DARK_GREY)
     draw_grid()
