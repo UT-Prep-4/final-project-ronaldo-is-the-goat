@@ -72,20 +72,26 @@ pygame.init()
 
 WIDTH, HEIGHT = 500, 500
 
-GRID_SIZE = 40 # size of each grid pixel
+GRID_SIZE: int = 50 # size of each grid pixel
 
-WHITE = (255,255,255)
-DARK_GREY = (50, 50, 50)
-LIGHT_GREY = (200, 200, 200)
-YELLOW = (255,255,0)
+WHITE: tuple(int) = (255,255,255)
+DARK_GREY: tuple(int) = (50, 50, 50)
+LIGHT_GREY: tuple(int) = (200, 200, 200)
+YELLOW: tuple(int) = (255,255,0)
 
-COLS = WIDTH // GRID_SIZE
-ROWS = HEIGHT // GRID_SIZE
+COLS: int = WIDTH // GRID_SIZE
+ROWS: int = HEIGHT // GRID_SIZE
 
 grid_state = [[False for _ in range(COLS)] for _ in range(ROWS)]
 
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Conway's Game of Life")
+clock = pygame.time.Clock()
+font = pygame.font.Font(pygame, 20)
+time_txt = font.render(f"Elapsed time: {pygame.time.get_ticks()}", True, WHITE)
+controls_txt = font.render(f"Press SPACEBAR to pause/unpause", True, WHITE)
+
+is_paused = False
 
 def draw_grid():
     # draws the grid pattern
@@ -106,7 +112,7 @@ while True:
         pygame.quit()
         sys.exit()
       
-      if event.type == pygame.MOUSEBUTTONDOWN:
+      if event.type == pygame.MOUSEBUTTONDOWN and (is_paused):
          if event.button == 1:
             mouse_x, mouse_y = event.pos
             
@@ -115,7 +121,29 @@ while True:
 
             if 0 <= clicked_column < COLS and 0 < clicked_row < ROWS:
               grid_state[clicked_row][clicked_column] = not grid_state[clicked_row][clicked_column]
-              
+      if event.type == pygame.K_SPACE:
+        is_paused = not is_paused
+        
+    if is_paused:
+        
+      def update_cell_state(grid, x, y):
+        live_neighbors = 0
+
+        for dx in [-1, 0 , 1]:
+           for dy in [-1, 0 , 1]
+
+          if dx == 0 and dy == 0:
+           continue
+          
+    
+
+
+
+
+
     screen.fill(DARK_GREY)
     draw_grid()
+    screen.blit(time_txt, (50,400))
+    screen.blit(controls_txt, (50, 450))
     pygame.display.flip()
+    clock.tick(60)
