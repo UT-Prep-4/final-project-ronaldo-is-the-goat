@@ -83,6 +83,8 @@ YELLOW = (255,255,0)
 COLS: int = WIDTH // GRID_SIZE
 ROWS: int = HEIGHT // GRID_SIZE
 
+FPS = 2
+
 
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Conway's Game of Life")
@@ -172,10 +174,14 @@ while True:
     elif event.type == pygame.KEYDOWN:
       if event.key == pygame.K_SPACE:
         is_paused = not is_paused
+      if event.key = pygame.K_a:
+        FPS -= 1
+      if event.key = pygame.K_d:
+        FPS += 1
         
   if not is_paused:
     grid = update_grid(grid)
-    clock.tick(1)
+    clock.tick(FPS)
 
 
   screen.fill(DARK_GREY)
