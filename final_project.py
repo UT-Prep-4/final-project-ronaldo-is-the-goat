@@ -66,7 +66,7 @@ the grader reads all of them). Delete this line and start!
 
 import pygame
 import sys
-import time
+import copy
 
 pygame.init()
 
@@ -74,10 +74,10 @@ WIDTH, HEIGHT = 500, 500
 
 GRID_SIZE: int = 50 # size of each grid pixel
 
-WHITE: tuple(int) = (255,255,255)
-DARK_GREY: tuple(int) = (50, 50, 50)
-LIGHT_GREY: tuple(int) = (200, 200, 200)
-YELLOW: tuple(int) = (255,255,0)
+WHITE = (255,255,255)
+DARK_GREY = (50, 50, 50)
+LIGHT_GREY = (200, 200, 200)
+YELLOW = (255,255,0)
 
 COLS: int = WIDTH // GRID_SIZE
 ROWS: int = HEIGHT // GRID_SIZE
@@ -87,9 +87,7 @@ grid_state = [[False for _ in range(COLS)] for _ in range(ROWS)]
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Conway's Game of Life")
 clock = pygame.time.Clock()
-font = pygame.font.Font(pygame, 20)
-time_txt = font.render(f"Elapsed time: {pygame.time.get_ticks()}", True, WHITE)
-controls_txt = font.render(f"Press SPACEBAR to pause/unpause", True, WHITE)
+font = pygame.font.Font(None, 15)
 
 is_paused = False
 
@@ -104,6 +102,35 @@ def draw_grid():
 
             pygame.draw.rect(screen, LIGHT_GREY, rect, 1)
 
+def update_cell_state(grid, x, y):
+        live_neighbors = 0
+        if (((clicked_column in range(WIDTH - GRID_SIZE, WIDTH)) or (clicked_column in range(GRID_SIZE))) and ((clicked_row in range(HEIGHT - GRID_SIZE, HEIGHT)) or (clicked_row in range(GRID_SIZE)))):
+           
+          for dx in [-1, 0 , 1]:
+            for dy in [-1, 0 , 1]:
+
+              if dx == 0 and dy == 0:
+                continue
+
+              new_x = x + dx
+              new_y = y + dy
+
+              if grid[new_x][new_y] == 1:
+                live_neighbors += 1
+
+            if live_neighbors < 2:
+               return 0
+            else:
+               return 1
+
+def draw_txt():
+  time_txt = font.render(f"Elapsed time: {(pygame.time.get_ticks()/1000):.1f}", True, WHITE)
+  controls_txt = font.render(f"Press SPACEBAR to pause/unpause", True, WHITE)
+  screen.blit(time_txt, (10, 5))
+  screen.blit(controls_txt, (10, 15))
+
+clicked_column, clicked_row = 0, 0
+
 while True:
     mouse_x, mouse_y = pygame.mouse.get_pos()
 
@@ -113,41 +140,27 @@ while True:
         sys.exit()
       
       if event.type == pygame.MOUSEBUTTONDOWN and (is_paused):
-         if event.button == 1:
-            mouse_x, mouse_y = event.pos
+        if event.button == 1:
+          mouse_x, mouse_y = event.pos
             
-            clicked_column = mouse_x // GRID_SIZE
-            clicked_row = mouse_y // GRID_SIZE
+          clicked_column = mouse_x // GRID_SIZE
+          clicked_row = mouse_y // GRID_SIZE
 
-            if 0 <= clicked_column < COLS and 0 < clicked_row < ROWS:
-              grid_state[clicked_row][clicked_column] = not grid_state[clicked_row][clicked_column]
-      if event.type == pygame.K_SPACE:
-        is_paused = not is_paused
+        if 0 <= clicked_column < COLS and 0 <= clicked_row < ROWS:
+          grid_state[clicked_row][clicked_column] = not grid_state[clicked_row][clicked_column]
+
+      if event.type == pygame.KEYDOWN:
+        if event.key == pygame.K_SPACE:
+          is_paused = not is_paused
         
-    if is_paused:
-        
-      def update_cell_state(grid, x, y):
-        live_neighbors = 0
-        if (((clicked_row in range(WIDTH - GRID_SIZE, WIDTH)) or (clicked_row in range(GRID_SIZE))) and clicked_column in range(HEIGHT - GRID_SIZE, HEIGHT) or clicked_column in range(GRID_SIZE)):
-           
-        for dx in [-1, 0 , 1]:
-           for dy in [-1, 0 , 1]:
-
-          if dx == 0 and dy == 0:
-           continue
-
-          new_x = x + dx
-          new_y = y + dy 
-
-          if live_neighbors == 1
+    if not is_paused:
+      update_cell_state(grid_state, clicked_column, clicked_row)
+      
+      clock.tick(60)
     
-
-
-
+    
 
     screen.fill(DARK_GREY)
     draw_grid()
-    screen.blit(time_txt, (50,400))
-    screen.blit(controls_txt, (50, 450))
+    draw_txt()
     pygame.display.flip()
-    clock.tick(60)
