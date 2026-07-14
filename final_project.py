@@ -128,15 +128,19 @@ while True:
         
       def update_cell_state(grid, x, y):
         live_neighbors = 0
-
+        if (((clicked_row in range(WIDTH - GRID_SIZE, WIDTH)) or (clicked_row in range(GRID_SIZE))) and clicked_column in range(HEIGHT - GRID_SIZE, HEIGHT) or clicked_column in range(GRID_SIZE)):
+           
         for dx in [-1, 0 , 1]:
-           for dy in [-1, 0 , 1]
+           for dy in [-1, 0 , 1]:
 
           if dx == 0 and dy == 0:
            continue
-          
-    
 
+          new_x = x + dx
+          new_y = y + dy 
+
+          if live_neighbors == 1
+    
 
 
 
