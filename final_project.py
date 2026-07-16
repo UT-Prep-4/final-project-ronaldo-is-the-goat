@@ -79,11 +79,13 @@ WHITE = (255,255,255)
 DARK_GREY = (50, 50, 50)
 LIGHT_GREY = (200, 200, 200)
 YELLOW = (255,255,0)
-
+RED = (255, 0 , 0)
+GREEN = (0, 255, 0)
+BLUE = (0, 0, 255)
 COLS: int = WIDTH // GRID_SIZE
 ROWS: int = HEIGHT // GRID_SIZE
 
-FPS = 2
+FPS = 4
 
 
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
@@ -103,6 +105,8 @@ def draw_grid(grid):
         for col in range(COLS):
 
             color = YELLOW if grid[row][col] == 1 else LIGHT_GREY
+            color = GREEN if count_neighbors(grid, row, col) < 2 else YELLOW
+            color = RED if count_neighbors(grid, row, col) > 3 else YELLOW
             pygame.draw.rect(
                 screen, 
                 color, 
@@ -174,10 +178,10 @@ while True:
     elif event.type == pygame.KEYDOWN:
       if event.key == pygame.K_SPACE:
         is_paused = not is_paused
-      if event.key = pygame.K_a:
-        FPS -= 1
-      if event.key = pygame.K_d:
-        FPS += 1
+      if event.key == pygame.K_a:
+        FPS -= 1 if FPS > 1 else 0
+      if event.key == pygame.K_d:
+        FPS += 1 if FPS < 10 else 0
         
   if not is_paused:
     grid = update_grid(grid)
