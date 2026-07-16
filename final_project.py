@@ -104,9 +104,10 @@ def draw_grid(grid):
     for row in range(ROWS):
         for col in range(COLS):
 
+          
+            
             color = YELLOW if grid[row][col] == 1 else LIGHT_GREY
-            color = GREEN if count_neighbors(grid, row, col) < 2 else YELLOW
-            color = RED if count_neighbors(grid, row, col) > 3 else YELLOW
+            
             pygame.draw.rect(
                 screen, 
                 color, 
