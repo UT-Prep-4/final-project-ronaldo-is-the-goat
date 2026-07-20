@@ -132,9 +132,17 @@ def count_neighbors(grid, x, y):
 
 def draw_txt():
   time_txt = font.render(f"Elapsed time: {(pygame.time.get_ticks()/1000):.1f}", True, WHITE)
-  controls_txt = font.render(f"Press SPACEBAR to pause/unpause", True, WHITE)
+  controls_txt = font.render(f"Controls:", True, WHITE)
+  controls_txt2 = font.render(f"- Space to pause/unpause", True, WHITE)
+  controls_txt3 = font.render(f"- Click to fill in squares", True, WHITE)
+  controls_txt4 = font.render(f"- A and D to increment game speed", True, WHITE)
+  controls_txt5 = font.render(f"- R to restart simulation", True, WHITE)
   screen.blit(time_txt, (10, 5))
   screen.blit(controls_txt, (10, 15))
+  screen.blit(controls_txt2, (10, 25))
+  screen.blit(controls_txt3, (10,35))
+  screen.blit(controls_txt4, (10,45))
+  screen.blit(controls_txt5, (10,55))
 
 def update_grid(grid):
     new_grid = [[0 for _ in range(COLS)] for _ in range(ROWS)]
