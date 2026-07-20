@@ -1,4 +1,4 @@
-#Name(s):
+#Name(s): Suchir, Jayan, Chirag, Alex
 #Final Project - Build Something Worth Showing Off
 '''
 This is the big one. At the end of camp you will demo this project at the
@@ -64,4 +64,143 @@ Build your project below (and split it into more .py files if it gets big;
 the grader reads all of them). Delete this line and start!
 '''
 
-print("My final project is not built yet!")
+import pygame
+import sys
+import copy
+import random as r
+
+pygame.init()
+
+WIDTH, HEIGHT = 750, 700
+
+GRID_SIZE: int = 25 # size of each grid pixel
+
+WHITE = (255,255,255)
+DARK_GREY = (50, 50, 50)
+LIGHT_GREY = (200, 200, 200)
+YELLOW = (255,255,0)
+RED = (255, 0 , 0)
+GREEN = (0, 255, 0)
+BLUE = (0, 0, 255)
+COLS: int = WIDTH // GRID_SIZE
+ROWS: int = HEIGHT // GRID_SIZE
+
+FPS = 4
+
+
+screen = pygame.display.set_mode((WIDTH, HEIGHT))
+pygame.display.set_caption("Conway's Game of Life")
+clock = pygame.time.Clock()
+font = pygame.font.Font(None, 15)
+
+is_paused = False
+
+def create_grid():
+  return [[0 for _ in range(COLS)] for _ in range(ROWS)]
+
+
+def draw_grid(grid):
+    # draws the grid pattern
+    for row in range(ROWS):
+        for col in range(COLS):
+
+          
+            
+            color = YELLOW if grid[row][col] == 1 else LIGHT_GREY
+            
+            pygame.draw.rect(
+                screen, 
+                color, 
+                (col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE - 1, GRID_SIZE - 1)
+            )
+
+def count_neighbors(grid, x, y):
+  live_neighbors = 0           
+  for dx in [-1, 0 , 1]:
+    for dy in [-1, 0 , 1]:
+
+      if dx == 0 and dy == 0:
+        continue
+
+      neighbor_x = (x + dx) % ROWS
+      neighbor_y = (y + dy) % COLS
+
+      live_neighbors += grid[neighbor_x][neighbor_y]
+
+  return live_neighbors
+
+
+def draw_txt():
+  time_txt = font.render(f"Elapsed time: {(pygame.time.get_ticks()/1000):.1f}", True, WHITE)
+  controls_txt = font.render(f"Controls:", True, WHITE)
+  controls_txt2 = font.render(f"- Space to pause/unpause", True, WHITE)
+  controls_txt3 = font.render(f"- Click to fill in squares", True, WHITE)
+  controls_txt4 = font.render(f"- A and D to increment game speed", True, WHITE)
+  controls_txt5 = font.render(f"- R to restart simulation", True, WHITE)
+  screen.blit(time_txt, (10, 5))
+  screen.blit(controls_txt, (10, 15))
+  screen.blit(controls_txt2, (10, 25))
+  screen.blit(controls_txt3, (10,35))
+  screen.blit(controls_txt4, (10,45))
+  screen.blit(controls_txt5, (10,55))
+
+def update_grid(grid):
+    new_grid = [[0 for _ in range(COLS)] for _ in range(ROWS)]
+    
+    for x in range(ROWS):
+        for y in range(COLS):
+            neighbors = count_neighbors(grid, x, y)
+
+            # if grid[x][y] == 1: do underpopulation, overpopuylation, survival
+            # else do reproduction
+            if grid[x][y] == 1:
+              if neighbors < 2 or neighbors > 3:
+                 new_grid[x][y] = 0
+              else:
+                 new_grid[x][y] = 1
+            elif neighbors == 3 and grid[x][y] == 0:
+                new_grid[x][y] = 1
+
+    return new_grid
+
+clicked_column, clicked_row = 0, 0
+grid = create_grid()
+
+while True:
+  mouse_x, mouse_y = pygame.mouse.get_pos()
+
+  for event in pygame.event.get():
+    if event.type == pygame.QUIT:
+      pygame.quit()
+      sys.exit()
+    
+    elif event.type == pygame.MOUSEBUTTONDOWN:
+      if event.button == 1:
+        mouse_x, mouse_y = event.pos
+          
+        clicked_column = mouse_x // GRID_SIZE
+        clicked_row = mouse_y // GRID_SIZE
+      
+      if 0 <= clicked_column < COLS and 0 <= clicked_row < ROWS:
+        grid[clicked_row][clicked_column] = not grid[clicked_row][clicked_column]
+
+    elif event.type == pygame.KEYDOWN:
+      if event.key == pygame.K_SPACE:
+        is_paused = not is_paused
+      if event.key == pygame.K_a:
+        FPS -= 1 if FPS > 1 else 0
+      if event.key == pygame.K_d:
+        FPS += 1 if FPS < 10 else 0
+      if event.key == pygame.K_r:
+        grid = create_grid()
+        is_paused = True
+        
+  if not is_paused:
+    grid = update_grid(grid)
+    clock.tick(FPS)
+
+
+  screen.fill(DARK_GREY)
+  draw_grid(grid)
+  draw_txt()
+  pygame.display.flip()
