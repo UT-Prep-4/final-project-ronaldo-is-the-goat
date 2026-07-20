@@ -71,7 +71,7 @@ import random as r
 
 pygame.init()
 
-WIDTH, HEIGHT = 700, 700
+WIDTH, HEIGHT = 750, 700
 
 GRID_SIZE: int = 25 # size of each grid pixel
 
