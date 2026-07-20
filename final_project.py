@@ -71,7 +71,7 @@ import random as r
 
 pygame.init()
 
-WIDTH, HEIGHT = 500, 500
+WIDTH, HEIGHT = 700, 700
 
 GRID_SIZE: int = 25 # size of each grid pixel
 
@@ -96,7 +96,7 @@ font = pygame.font.Font(None, 15)
 is_paused = False
 
 def create_grid():
-  return [[False for _ in range(COLS)] for _ in range(ROWS)]
+  return [[0 for _ in range(COLS)] for _ in range(ROWS)]
 
 
 def draw_grid(grid):
@@ -183,6 +183,9 @@ while True:
         FPS -= 1 if FPS > 1 else 0
       if event.key == pygame.K_d:
         FPS += 1 if FPS < 10 else 0
+      if event.key == pygame.K_r:
+        grid = create_grid()
+        is_paused = True
         
   if not is_paused:
     grid = update_grid(grid)
